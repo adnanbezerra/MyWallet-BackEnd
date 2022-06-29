@@ -80,7 +80,7 @@ server.post('/login', async (request, response) => {
     const user = await db.collection('usuarios').findOne({ email: login.email });
     if (!user) return response.sendStatus(404);
 
-    if (user && bcrypt.compareSync(user.senha, login.senha)) {
+    if (user && bcrypt.compareSync(login.senha, user.senha )) {
         const token = uuid()
 
         await db.collection('sessoes').insertOne({
@@ -88,12 +88,17 @@ server.post('/login', async (request, response) => {
             userId: user._id
         })
 
-        response.status(201).send(token)
+        response.status(201).send({...user, token})
 
     } else {
         response.sendStatus(401);
 
     }
+})
+
+server.get('/usuarios', async (request, response) => {
+    const usuarios = await db.collection('usuarios').find().toArray();
+    response.status(200).send(usuarios)
 })
 
 server.delete('/logoff', async (request, response) => {
@@ -123,9 +128,8 @@ function validarDadosDoExtrato(novaEntrada) {
     const validationSchema = joi.object({
         valor: joi.number().required(),
         descricao: joi.string().required(),
-        data: joi.number().required(),
-        tipo: joi.string().valid('entrada', 'saida'),
-        usuario: joi.string().required()
+        data: joi.string().required(),
+        tipo: joi.string().valid('entrada', 'saida')
     })
 
     return validar(validationSchema, novaEntrada);
@@ -151,7 +155,7 @@ function validar(validationSchema, validando) {
 async function verificarExistenciaDoUsuario(novoCadastro) {
     const listaDeUsuarios = await db.collection('usuarios').find().toArray();
 
-    for (usuario of listaDeUsuarios) {
+    for (let usuario of listaDeUsuarios) {
         if (usuario.email === novoCadastro.email) return true;
     }
     return false;
