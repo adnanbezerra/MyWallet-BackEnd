@@ -109,7 +109,7 @@ server.delete('/logoff', async (request, response) => {
     if (!sessao) return response.sendStatus(401);
 
     await db.collection('sessoes').deleteOne(sessao);
-    response.sendStatus(200)
+    response.sendStatus(204)
 })
 
 
