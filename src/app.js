@@ -96,6 +96,7 @@ server.post('/login', async (request, response) => {
     }
 })
 
+// Essa rota serve apenas para fins de teste
 server.get('/usuarios', async (request, response) => {
     const usuarios = await db.collection('usuarios').find().toArray();
     response.status(200).send(usuarios)
