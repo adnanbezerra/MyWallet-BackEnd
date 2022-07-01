@@ -5,10 +5,8 @@ dotenv.config();
 const MONGO = process.env.MONGO_CONNECTION;
 
 // Conexão com o banco de dados
-const mongoClient = new MongoClient(MONGO);
-let db;
-mongoClient.connect().then(() => {
-    db = mongoClient.db("mywallet")
-})
+const mongoClient = new MongoClient(MONGO)
+await mongoClient.connect();
 
+const db = mongoClient.db("mywallet")
 export default db;
