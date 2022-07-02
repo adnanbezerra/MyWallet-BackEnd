@@ -6,7 +6,7 @@ import userRouter from './routes/userRoutes.js'
 
 dotenv.config()
 
-const PORTA = process.env.PORTA_LOCALHOST;
+const PORT = process.env.PORT;
 
 // Configurações básicas do servidor backend
 const server = express();
@@ -16,6 +16,6 @@ server.use(express.json());
 server.use(userRouter);
 server.use(balanceRouter);
 
-server.listen(PORTA, () => {
+server.listen(PORT, () => {
     console.log("It's alive!");
 });
