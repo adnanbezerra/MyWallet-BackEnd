@@ -1,3 +1,4 @@
+import bcrypt from 'bcrypt';
 import db from "../dbStrategy/mongodb.js";
 
 export async function postCadastro(request, response) {
